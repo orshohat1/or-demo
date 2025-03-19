@@ -1,0 +1,33 @@
+name: Parallel and Dependent Jobs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Application
+        run: echo "Building application..."
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Tests
+        run: npm run test:mac
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: echo "Deploying application..."
